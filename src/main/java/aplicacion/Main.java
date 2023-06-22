@@ -45,12 +45,12 @@ public class Main {
 	}
 
 	private static void carrito() {
-		String x;
+	/*	String x;
 		do {
 			CatalogoDAO.getInstancia().buscarCatalogo();
 			x = opcionesCarrito(); // agregar, eliminiar, cantidad o terminar (x) 
 		}
-		while (!x.equalsIgnoreCase("x"));
+		while (!x.equalsIgnoreCase("x"));*/
 	}
 
 	private static UsuarioActual ingresarUsuario() {

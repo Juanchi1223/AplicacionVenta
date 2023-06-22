@@ -50,8 +50,10 @@ public class CarritoDAO {
 	}
 	
 	public void cambiarCarrito() {
-		
+		// parecid a cambiar pero se ingresa la cantiadad producto
 	}
 	
-	public void undo() {}
+	public void undo() {
+		// vas a tener que hacer un rpop y lesto 
+	}
 }
