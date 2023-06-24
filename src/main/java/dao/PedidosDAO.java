@@ -1,0 +1,36 @@
+package dao;
+
+import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
+import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
+import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
+
+import org.bson.codecs.configuration.CodecProvider;
+import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.codecs.pojo.PojoCodecProvider;
+
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+import conexiones.ConexionMongo;
+import pojos.Pedido;
+
+public class PedidosDAO {
+	private static PedidosDAO instancia;
+	
+	public static PedidosDAO getInstancia() {
+		if (instancia == null)
+			instancia = new PedidosDAO();
+		return instancia;
+	} 
+	
+	public void agregarPedido(Pedido pedido) {
+		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+		
+		MongoDatabase database = ConexionMongo.getInstancia().getCliente().getDatabase("aplicacion").withCodecRegistry(pojoCodecRegistry);;
+		MongoCollection<Pedido> colecion = database.getCollection("pedidos", Pedido.class);
+		
+		colecion.insertOne(pedido);
+	}
+	
+}

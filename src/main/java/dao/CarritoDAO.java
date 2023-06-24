@@ -2,6 +2,8 @@ package dao;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+
+import java.util.ArrayList;
 import conexiones.ConexionRedis;
 
 import com.google.gson.Gson;
@@ -17,7 +19,7 @@ public class CarritoDAO {
 		return instancia;
 	} 
 	
-	public void agregarCarrito(Ingreso ingreso, String usuario) {	// TODO arreglar se puede ingresar duplicados
+	public void agregarCarrito(Ingreso ingreso, String usuario) {	 
 		JedisPool pool = ConexionRedis.getInstancia().getJedis();
 		Jedis jedis = pool.getResource();
 
@@ -30,18 +32,27 @@ public class CarritoDAO {
         jedis.close();
         System.out.print("Se agrego "+ ingreso.getNombre_producto()+" correctamente");
 	}
+	/*
+	 * 	TODO arreglar se puede ingresar duplicados 
+	 * 	TODO mostrar carrito
+	 * 
+	 * */
+	
+	
 	public void eliminarCarrito(String usuario, String nombre_producto) {
 		JedisPool pool = ConexionRedis.getInstancia().getJedis();
 		Jedis jedis = pool.getResource();
 		
-		long tope = jedis.llen(usuario+"Carrito");
+		String carrito = usuario+"Carrito";
+		
+		long tope = jedis.llen(carrito);
 		Gson gson = new Gson();
 		
 		for(long i = 0; i < tope; i++){
-			String objJson = jedis.lindex(usuario+"Carrito", i);
+			String objJson = jedis.lindex(carrito, i);
 			Ingreso ingreso = gson.fromJson(objJson, Ingreso.class);
 			if(ingreso.getNombre_producto().equals(nombre_producto)) {
-				jedis.lrem(usuario+"Carrito", 0, objJson);
+				jedis.lrem(carrito, 0, objJson);
 				break;
 			}
 		}
@@ -49,11 +60,55 @@ public class CarritoDAO {
 		jedis.close();
 	}
 	
-	public void cambiarCarrito() {
+	public void cambiarCarrito(int cantidad, String usuario, String nombre_producto) {
 		// parecid a cambiar pero se ingresa la cantiadad producto
+		Jedis jedis = ConexionRedis.getInstancia().getJedis().getResource();
+		
+		String carrito = usuario+"Carrito";
+		long tope = jedis.llen(carrito);
+		
+		Gson gson = new Gson();
+		
+		for(long i = 0; i < tope; i++){
+			String objJson = jedis.lindex(carrito, i);
+			Ingreso ingreso = gson.fromJson(objJson, Ingreso.class);
+			if (ingreso.getNombre_producto().equals(nombre_producto)) {
+				ingreso.setCantidad(cantidad);
+				String objJsonUpdt = gson.toJson(ingreso);
+				jedis.lset(carrito, i, objJsonUpdt);
+				break;
+			}
+		}
+		
+		jedis.close();
 	}
 	
-	public void undo() {
-		// vas a tener que hacer un rpop y lesto 
+	public void undo(String usuario) {
+		Jedis jedis = ConexionRedis.getInstancia().getJedis().getResource();
+
+		String carrito = usuario+"Carrito";
+		
+		jedis.rpop(carrito);
+		
+		jedis.close();
+	}
+	
+	public ArrayList<Ingreso> getCarrito(String usuario) {
+		ArrayList<Ingreso> lista = new ArrayList<Ingreso>();
+ 		Jedis jedis = ConexionRedis.getInstancia().getJedis().getResource();
+		
+		String carrito = usuario+"Carrito";
+		
+		long tope = jedis.llen(carrito);
+		Gson gson = new Gson();
+		
+		for(long i = 0; i < tope; i++){
+			String objJson = jedis.lindex(carrito, i);
+			Ingreso ingreso = gson.fromJson(objJson, Ingreso.class);
+			lista.add(ingreso);
+		}
+		
+		jedis.close();
+		return lista;
 	}
 }
