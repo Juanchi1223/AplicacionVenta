@@ -31,11 +31,12 @@ public class Main {
 		
 		System.out.println("---- TIENDA ONLINE ----");
 	
-		//UsuarioActual usuario = ingresarUsuario(); 
+		UsuarioActual usuario = ingresarUsuario(); 
 	
-		//carrito(usuario.getNombreUs()); // ACA ES DONDE SE VA A CAMBIAR ENTRE ADMIN O US FINAL
+		carrito(usuario.getNombreUs()); // ACA ES DONDE SE VA A CAMBIAR ENTRE ADMIN O US FINAL
 	
-		hacerPedido("Arenales 2057", "rgodio");
+		
+		//hacerPedido("Arenales 2057", "rgodio");
 		
 		System.out.println("Termino la ejecucion");
 	}
@@ -106,6 +107,7 @@ public class Main {
 		
 		do {
 			CatalogoDAO.getInstancia().buscarCatalogo();
+			mostrarCarrito(usuario);
 			opcionesCarrito();
 			System.out.println("Que opcion queres usar: ");
 
@@ -122,7 +124,9 @@ public class Main {
 					cambiarProducto(usuario);
 					break;
 				case 4:
-					terminar();
+					estadoAnterior(usuario);
+					break;
+				case 5:
 					break;
 				default: 
 					System.out.println("NO ES NINGUNA OPCION");
@@ -133,7 +137,21 @@ public class Main {
 
 
 
-	private static void terminar() {		
+	private static void estadoAnterior(String usuario) {
+		CarritoDAO.getInstancia().undo(usuario);
+	}
+
+	private static void mostrarCarrito(String usuario) {
+		ArrayList<Ingreso> carritoAct = CarritoDAO.getInstancia().getCarrito(usuario);
+		
+		System.out.println();
+		System.out.println("-----   CARRITO   -----");
+		System.out.println("| producto | cantidad |");
+		for(Ingreso i: carritoAct) {
+			System.out.println(String.format("|%10s|%10s|", i.getNombre_producto(), Integer.toString(i.getCantidad())));
+		}
+		System.out.println("-----------------------");
+		
 	}
 
 	private static void cambiarProducto(String usuario) {
@@ -183,7 +201,8 @@ public class Main {
 		System.out.println("Ingresa (1) para agregar un nuevo producto");
 		System.out.println("Ingresa (2) para sacar un producto");
 		System.out.println("Ingresa (3) para cambiar la cantidad de un producto ingresado");
-		System.out.println("Ingresa (4) para cerrar el carrito y hacer el pedido");
+		System.out.println("Ingresa (4) para volver a un estado anterior");
+		System.out.println("Ingresa (5) para cerrar el carrito");
 	}
 
 	private static UsuarioActual ingresarUsuario() {

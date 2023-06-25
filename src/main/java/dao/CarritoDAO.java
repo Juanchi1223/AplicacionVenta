@@ -19,7 +19,8 @@ public class CarritoDAO {
 		return instancia;
 	} 
 	
-	public void agregarCarrito(Ingreso ingreso, String usuario) {	 
+	public void agregarCarrito(Ingreso ingreso, String usuario) {	 // ver q se ingrese algo del catalogo, se pueden ingresar cosas random 
+		if(!duplicado(ingreso, usuario)) {
 		JedisPool pool = ConexionRedis.getInstancia().getJedis();
 		Jedis jedis = pool.getResource();
 
@@ -27,17 +28,25 @@ public class CarritoDAO {
 		Gson gson = new Gson();
         String ingresoJson = gson.toJson(ingreso);
 
+        
         jedis.rpush(usuario+"Carrito", ingresoJson);
         
         jedis.close();
         System.out.print("Se agrego "+ ingreso.getNombre_producto()+" correctamente");
+        }
+		else {
+			System.out.println("Este producto ya fue ingresado, porfavor para cambiar la cantidad comprada usar la opcion de CAMBIAR ;) ");
+		}
 	}
-	/*
-	 * 	TODO arreglar se puede ingresar duplicados 
-	 * 	TODO mostrar carrito
-	 * 
-	 * */
-	
+	private boolean duplicado(Ingreso ingreso, String usuario) {
+		ArrayList<Ingreso> carrito = getCarrito(usuario);
+		
+		for (Ingreso i: carrito) {
+			if(i.getNombre_producto().equals(ingreso.getNombre_producto())) 
+				return true;
+		}
+		return false;
+	}
 	
 	public void eliminarCarrito(String usuario, String nombre_producto) {
 		JedisPool pool = ConexionRedis.getInstancia().getJedis();
@@ -61,7 +70,6 @@ public class CarritoDAO {
 	}
 	
 	public void cambiarCarrito(int cantidad, String usuario, String nombre_producto) {
-		// parecid a cambiar pero se ingresa la cantiadad producto
 		Jedis jedis = ConexionRedis.getInstancia().getJedis().getResource();
 		
 		String carrito = usuario+"Carrito";

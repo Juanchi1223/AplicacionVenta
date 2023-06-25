@@ -36,9 +36,7 @@ public class CatalogoDAO {
 		
 		System.out.println();
 		System.out.println("------- CATALOGO --------");
-		System.out.println();
 		
-		System.out.println("-------------------------");
 		System.out.println(" nombre producto | precio");
 		System.out.println("-------------------------");
 		
