@@ -37,14 +37,14 @@ public class Main {
 		
 		System.out.println("---- TIENDA ONLINE ----");
 	
-		/*UsuarioActual usuario = ingresarUsuario(); 
+		UsuarioActual usuario = ingresarUsuario(); 
 	
-		carrito(usuario.getNombreUs()); // ACA ES DONDE SE VA A CAMBIAR ENTRE ADMIN O US FINAL
+		//carrito(usuario.getNombreUs()); // ACA ES DONDE SE VA A CAMBIAR ENTRE ADMIN O US FINAL
 
 		hacerPedido(usuario);	// TODO monotribusta
-		 */
 		
-		FacturasDAO.getInstancia().pagar(new Operacion(1, 1, "efvo", "cajero", LocalDateTime.now(), 1500));		//TODO buscar como verga es el DATE de sql :) 
+		
+		//FacturasDAO.getInstancia().pagar(new Operacion(1, 1, "efvo", "cajero", LocalDateTime.now(), 1500));		//TODO buscar como verga es el DATE de sql :) 
 		
 		// facturar
 
@@ -86,6 +86,9 @@ public class Main {
 		System.out.println(" Ingresa la cantidad de impuestos aplicados: ");
 		double impuesto = input.nextDouble();
 		aux.setImpuestos(impuesto);
+		
+		aux.setCarrito(CarritoDAO.getInstancia().getCarrito(usuario.getNombreUs()));
+		System.out.println(aux.getCarrito().toString());
 		
 		PedidosDAO.getInstancia().agregarPedido(aux);
 	}

@@ -1,5 +1,10 @@
 package pojos;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bson.Document;
+
 public class Pedido {
 	private String nombre;
 	private String apellido;
@@ -8,6 +13,7 @@ public class Pedido {
 	private double monto;
 	private double descuento;
 	private double impuestos;
+	private List<Document> carrito;
 	
 	
 	public String getNombre() {
@@ -52,6 +58,19 @@ public class Pedido {
 	public void setImpuestos(double impuestos) {
 		this.impuestos = impuestos;
 	}
-
-	
+	public List<Document> getCarrito() {
+		return carrito;
+	}
+	public void setCarrito(List<Document> carrito) {
+		this.carrito = carrito;
+	}
+	public void setCarrito(ArrayList<Ingreso> carrito){
+		this.carrito = new ArrayList<Document>();	
+		for(Ingreso i : carrito) {
+			Document aux = new Document();
+			aux.append("producto", i.getNombre_producto());
+			aux.append("cantidad", i.getCantidad());
+			this.carrito.add(aux);
+		}
+	}
 }

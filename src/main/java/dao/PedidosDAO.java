@@ -4,6 +4,7 @@ import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
+import org.bson.Document;
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -28,7 +29,19 @@ public class PedidosDAO {
 	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
 		
 		MongoDatabase database = ConexionMongo.getInstancia().getCliente().getDatabase("aplicacion").withCodecRegistry(pojoCodecRegistry);;
+//		MongoCollection<Document> colecion = database.getCollection("pedidos");
 		MongoCollection<Pedido> colecion = database.getCollection("pedidos", Pedido.class);
+		
+		/*Document aux = new Document();
+		
+		aux.append("nombre", pedido.getNombre());
+		aux.append("apellido", pedido.getApellido());
+		aux.append("direccion", pedido.getDireccion());
+		aux.append("iva", pedido.isIva());
+		aux.append("monto", pedido.getMonto());
+		aux.append("descuentos", pedido.getDescuento());
+		aux.append("impuestos", pedido.getImpuestos());
+		aux.append("carrito", pedido.getCarrito());*/
 		
 		colecion.insertOne(pedido);
 	}
