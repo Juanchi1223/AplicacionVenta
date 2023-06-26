@@ -39,10 +39,9 @@ public class Main {
 	
 		UsuarioActual usuario = ingresarUsuario(); 
 	
-		//carrito(usuario.getNombreUs()); // ACA ES DONDE SE VA A CAMBIAR ENTRE ADMIN O US FINAL
+		carrito(usuario.getNombreUs()); // ACA ES DONDE SE VA A CAMBIAR ENTRE ADMIN O US FINAL
 
-		hacerPedido(usuario);	// TODO monotribusta
-		
+		hacerPedido(usuario);			// TODO LUEGO DE HACER EL PEDIDO BORRAR EL CARRITO
 		
 		//FacturasDAO.getInstancia().pagar(new Operacion(1, 1, "efvo", "cajero", LocalDateTime.now(), 1500));		//TODO buscar como verga es el DATE de sql :) 
 		
@@ -161,7 +160,7 @@ public class Main {
 					System.out.println("NO ES NINGUNA OPCION");
 			}
 		}
-		while (x != 4);		
+		while (x != 5);		
 	}
 
 

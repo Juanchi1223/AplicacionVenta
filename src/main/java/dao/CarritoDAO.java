@@ -119,4 +119,12 @@ public class CarritoDAO {
 		jedis.close();
 		return lista;
 	}
+	public void cerrarCarrito(String usuario) {
+		ArrayList<Ingreso> lista = new ArrayList<Ingreso>();
+ 		Jedis jedis = ConexionRedis.getInstancia().getJedis().getResource();
+ 		
+		String carrito = usuario+"Carrito";
+		
+		jedis.ltrim(carrito, 0, -1);
+	}
 }
