@@ -6,6 +6,7 @@ import java.util.List;
 import org.bson.Document;
 
 public class Pedido {
+	private int idPedido;
 	private String nombre;
 	private String apellido;
 	private String direccion;
@@ -13,7 +14,7 @@ public class Pedido {
 	private double monto;
 	private double descuento;
 	private double impuestos;
-	private List<Document> carrito;
+	private List<Document> carrito = new ArrayList<Document>();
 	
 	
 	public String getNombre() {
@@ -72,5 +73,11 @@ public class Pedido {
 			aux.append("cantidad", i.getCantidad());
 			this.carrito.add(aux);
 		}
+	}
+	public int getIdPedido() {
+		return idPedido;
+	}
+	public void setIdPedido(int idPedido) {
+		this.idPedido = idPedido;
 	}
 }

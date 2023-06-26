@@ -53,23 +53,25 @@ public class Main {
 		System.out.println("Termino la ejecucion");
 	}
 
-	private static void pasarAFacturas(UsuarioActual usuario) {
+	private static void pasarAFacturas(UsuarioActual usuario, int idPedido) {
 		Scanner input = new Scanner(System.in);
 		String forma;
 		
 		System.out.println("Medio de pago a usar: ");
 		forma = input.nextLine();
 		
-		Factura aux = new Factura(usuario.getDocumento(), forma, );
+		Factura aux = new Factura(usuario.getDocumento(), forma, PedidosDAO.getInstancia().buscarMonto(idPedido));
 
-		FacturasDAO.getInstancia().guardarFactura(null);
+		FacturasDAO.getInstancia().guardarFactura(aux);
 		
 	}
 
-	private static void hacerPedido(UsuarioActual usuario ) { // cambiar parametro a usuario actual
+	private static void hacerPedido(UsuarioActual usuario) { // cambiar parametro a usuario actual
 		// crear el pedido, buscar el monto de redis, ingresar el pedido a mongo
 		Scanner input = new Scanner(System.in);
 		Pedido aux = new Pedido();
+		
+		aux.setIdPedido(PedidosDAO.getInstancia().darId()+1);
 		
 		System.out.println("Ingresa tu nombre de pila: ");
 		String nombre = input.nextLine();
@@ -100,7 +102,7 @@ public class Main {
 		System.out.println(aux.getCarrito().toString());
 		
 		PedidosDAO.getInstancia().agregarPedido(aux);
-		pasarAFacturas();
+		pasarAFacturas(usuario, aux.getIdPedido());
 	}
 
 	private static double getMonto(String nombreUs) {
@@ -168,7 +170,7 @@ public class Main {
 					break;
 				case 5:
 					hacerPedido(usuario);
-					borrarCarrito();
+					// borrarCarrito();
 					break;
 				default: 
 					System.out.println("NO ES NINGUNA OPCION");
