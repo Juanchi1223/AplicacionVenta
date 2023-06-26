@@ -4,6 +4,9 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
+
+import org.bson.Document;
+
 import java.time.*; 
 
 
@@ -98,11 +101,23 @@ public class Main {
 		double impuesto = input.nextDouble();
 		aux.setImpuestos(impuesto);
 		
-		aux.setCarrito(CarritoDAO.getInstancia().getCarrito(usuario.getNombreUs()));
+		ArrayList<Document> pedido = parseDoc(CarritoDAO.getInstancia().getCarrito(usuario.getNombreUs()));
+		aux.setCarrito(pedido);
+		
 		System.out.println(aux.getCarrito().toString());
 		
 		PedidosDAO.getInstancia().agregarPedido(aux);
 		pasarAFacturas(usuario, aux.getIdPedido());
+	}
+	private static ArrayList<Document> parseDoc(ArrayList<Ingreso> carrito){
+		ArrayList<Document> pedidoProd = new ArrayList<Document>();
+		for(Ingreso i : carrito) {
+			Document aux = new Document();
+			aux.append("producto", i.getNombre_producto());
+			aux.append("cantidad", i.getCantidad());
+			pedidoProd.add(aux);		
+		}
+		return pedidoProd;
 	}
 
 	private static double getMonto(String nombreUs) {

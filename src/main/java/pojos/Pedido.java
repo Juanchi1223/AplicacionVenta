@@ -14,7 +14,7 @@ public class Pedido {
 	private double monto;
 	private double descuento;
 	private double impuestos;
-	private List<Document> carrito = new ArrayList<Document>();
+	private List<Document> carrito;
 	
 	
 	public String getNombre() {
@@ -64,15 +64,6 @@ public class Pedido {
 	}
 	public void setCarrito(List<Document> carrito) {
 		this.carrito = carrito;
-	}
-	public void setCarrito(ArrayList<Ingreso> carrito){
-		this.carrito = new ArrayList<Document>();	
-		for(Ingreso i : carrito) {
-			Document aux = new Document();
-			aux.append("producto", i.getNombre_producto());
-			aux.append("cantidad", i.getCantidad());
-			this.carrito.add(aux);
-		}
 	}
 	public int getIdPedido() {
 		return idPedido;

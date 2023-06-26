@@ -53,7 +53,7 @@ public class FacturasDAO {
 			x = ConexionMySQL.getInstancia().getConnection().prepareStatement(" SELECT idFactura FROM facturas ORDER BY idFactura DESC LIMIT 1");
 			ResultSet aux = x.executeQuery();
 			aux.next();
-			id = aux.getInt(0);
+			id = aux.getInt(1);
 			x.close();
 			aux.close();
 		} catch (SQLException e) {

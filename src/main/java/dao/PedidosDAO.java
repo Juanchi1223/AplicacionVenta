@@ -56,9 +56,7 @@ public class PedidosDAO {
 		MongoDatabase database = ConexionMongo.getInstancia().getCliente().getDatabase("aplicacion").withCodecRegistry(pojoCodecRegistry);;
 		MongoCollection<Pedido> colecion = database.getCollection("pedidos", Pedido.class);
 	
-		Pedido x = colecion.find().sort(descending("idPedido")).first();
-		if (x == null)
-			return 0;
-		return x.getIdPedido();
+		int x = colecion.find().sort(descending("idPedido")).first().getIdPedido();
+		return x;
 	}
 }
