@@ -1,7 +1,11 @@
 package aplicacion;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Scanner;
+import java.time.*; 
+
 
 import conexiones.ConexionMySQL;
 import dao.*;
@@ -38,8 +42,10 @@ public class Main {
 		carrito(usuario.getNombreUs()); // ACA ES DONDE SE VA A CAMBIAR ENTRE ADMIN O US FINAL
 
 		hacerPedido(usuario);	// TODO monotribusta
-*/
-		ConexionMySQL.getInstancia().getConnection();
+		 */
+		
+		FacturasDAO.getInstancia().pagar(new Operacion(1, 1, "efvo", "cajero", LocalDateTime.now(), 1500));		//TODO buscar como verga es el DATE de sql :) 
+		
 		// facturar
 
 		
