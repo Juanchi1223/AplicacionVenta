@@ -71,7 +71,7 @@ public class Main {
 		aux.setApellido(apellido);
 		
 		System.out.println("Condicion ante el IVA: ");
-		boolean condicion = condicionStringBool();
+		String condicion = condicionString();
 		aux.setIva(condicion);
 		
 		aux.setDireccion(usuario.getDireccion());
@@ -105,21 +105,31 @@ public class Main {
 		return monto;
 	}
 
-	private static boolean condicionStringBool() {
+	private static String condicionString() {
 		Scanner input = new Scanner(System.in);
-		int x;
+		boolean flag = false;
+		
+		String x;
 		do {
-			System.out.println("Ingresa 0(True) o 1(False) para la condicion ante el iva");
-			x = input.nextInt();
-		}
-		while(x != 0 && x != 1); 
-		
-		if(x == 0)
-			return true;
-		
-		return false;
+			System.out.println("Ingresar C para Consumidor Final");
+			System.out.println("Ingresar R para Responsable Inscripto");
+			System.out.println("Ingresar S para Sujeto Exento");
+			x = input.nextLine();
+			if(x.equalsIgnoreCase("C")) {
+				return "Consumidor Final";
+			}
+			else if(x.equalsIgnoreCase("R")) {
+				return "Responsable Inscripto";
+			}
+			else if(x.equalsIgnoreCase("S")) {
+				return "Sujeto Exento";
+			}
+			else {
+				flag = true;
+			}
+		}while(flag);
+		return null;
 	}
-
 	private static void carrito(String usuario) {
 		Scanner input = new Scanner(System.in);
 		int x;

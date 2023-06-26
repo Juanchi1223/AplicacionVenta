@@ -24,24 +24,12 @@ public class PedidosDAO {
 		return instancia;
 	} 
 	
-	public void agregarPedido(Pedido pedido) {	// TODO agregar el carrito con sus cantidades al pedido
+	public void agregarPedido(Pedido pedido) {
 		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
 	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
 		
 		MongoDatabase database = ConexionMongo.getInstancia().getCliente().getDatabase("aplicacion").withCodecRegistry(pojoCodecRegistry);;
-//		MongoCollection<Document> colecion = database.getCollection("pedidos");
 		MongoCollection<Pedido> colecion = database.getCollection("pedidos", Pedido.class);
-		
-		/*Document aux = new Document();
-		
-		aux.append("nombre", pedido.getNombre());
-		aux.append("apellido", pedido.getApellido());
-		aux.append("direccion", pedido.getDireccion());
-		aux.append("iva", pedido.isIva());
-		aux.append("monto", pedido.getMonto());
-		aux.append("descuentos", pedido.getDescuento());
-		aux.append("impuestos", pedido.getImpuestos());
-		aux.append("carrito", pedido.getCarrito());*/
 		
 		colecion.insertOne(pedido);
 	}

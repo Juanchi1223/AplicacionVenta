@@ -9,7 +9,7 @@ public class Pedido {
 	private String nombre;
 	private String apellido;
 	private String direccion;
-	private boolean iva;
+	private String iva;
 	private double monto;
 	private double descuento;
 	private double impuestos;
@@ -25,7 +25,7 @@ public class Pedido {
 	public String getDireccion() {
 		return direccion;
 	}
-	public boolean isIva() {
+	public String getIva() {
 		return iva;
 	}
 	public double getMonto() {
@@ -46,7 +46,7 @@ public class Pedido {
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
-	public void setIva(boolean iva) {
+	public void setIva(String iva) {
 		this.iva = iva;
 	}
 	public void setMonto(double monto) {
