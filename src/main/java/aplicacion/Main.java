@@ -42,18 +42,30 @@ public class Main {
 		
 		System.out.println("---- TIENDA ONLINE ----");
 	
-		UsuarioActual usuario = ingresarUsuario(); 
+		//UsuarioActual usuario = ingresarUsuario(); 
 	
-		carrito(usuario); // ACA ES DONDE SE VA A CAMBIAR ENTRE ADMIN O US FINAL
+		//carrito(usuario); // ACA ES DONDE SE VA A CAMBIAR ENTRE ADMIN O US FINAL
 
 		//hacerPedido(usuario);			// TODO LUEGO DE HACER EL PEDIDO BORRAR EL CARRITO
 		
 		//pasarAFacturas();
-		//FacturasDAO.getInstancia().pagar(new Operacion(1, 1, "efvo", "cajero", LocalDateTime.now(), 1500));		//TODO buscar como verga es el DATE de sql :) 
+		//FacturasDAO.getInstancia().pagar(new Operacion(1, 1, "efvo", "cajero", LocalDateTime.now(), 1500)); 
 		
-		
+		pagar(FacturasDAO.getInstancia().buscarFactura(0));		// TODO conectar al flujo del programa
 		
 		System.out.println("Termino la ejecucion");
+	}
+
+	private static void pagar(Factura factura) {
+		Scanner input = new Scanner(System.in);
+		System.out.println("Quien era el operador(Enter si no hubo): ");
+		String op = input.nextLine(); 
+		if(op.isEmpty()) {
+			op = null;
+		}
+		
+		Operacion aux = new Operacion(factura.getIdFactura(), factura.getFormaDePago(), op,factura.getMonto());
+		OperacionesDAO.getInstancia().pagar(aux);
 	}
 
 	private static void pasarAFacturas(UsuarioActual usuario, int idPedido) {

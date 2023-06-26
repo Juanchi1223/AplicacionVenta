@@ -1,22 +1,28 @@
 package pojos;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+import dao.OperacionesDAO;
 
 public class Operacion {
 	private int idOperacion;
 	private int idFactura;
 	private String medio;
 	private String operador;
-	private LocalDateTime fecha;
+	private Date fecha;
+	private int hora;
 	private double monto;
 	
-	public Operacion(int id, int idFact, String medioPago, String operadorIner, LocalDateTime fechaPago, double montoTOT) {
-		this.idOperacion = id;
+	public Operacion(int idFact, String medioPago, String operadorIner,double montoTOT) {
+		this.idOperacion = OperacionesDAO.getInstancia().darIdOperacion() + 1;
 		this.idFactura = idFact;
 		this.medio = medioPago;
 		this.operador = operadorIner;
-		this.fecha = fechaPago;
+		this.fecha = java.sql.Date.valueOf(LocalDate.now());
+		this.hora = LocalTime.now().getHour();
 		this.monto = montoTOT;
 	}
 	public int getIdOperacion() {
@@ -30,9 +36,6 @@ public class Operacion {
 	}
 	public String getOperador() {
 		return operador;
-	}
-	public LocalDateTime getFecha() {
-		return fecha;
 	}
 	public double getMonto() {
 		return monto;
@@ -49,11 +52,20 @@ public class Operacion {
 	public void setOperador(String operador) {
 		this.operador = operador;
 	}
-	public void setFecha(LocalDateTime fecha) {
-		this.fecha = fecha;
-	}
 	public void setMonto(double monto) {
 		this.monto = monto;
+	}
+	public int getHora() {
+		return hora;
+	}
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+	public Date getFecha() {
+		return this.fecha;
+	}
+	public void setHora(int hora) {
+		this.hora = hora;
 	}
 
 	

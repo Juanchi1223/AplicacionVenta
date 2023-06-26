@@ -8,6 +8,10 @@ public class Factura {
 	private String formaDePago;
 	private double monto;
 	
+	public Factura() {
+	
+	}
+	
 	public Factura(int DNI, String forma, double montoTot) {
 		this.idFactura = FacturasDAO.getInstancia().darIdFact() + 1;
 		this.DNIusuario = DNI;
