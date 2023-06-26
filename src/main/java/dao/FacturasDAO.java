@@ -9,6 +9,8 @@ import conexiones.ConexionMySQL;
 import pojos.Factura;
 import pojos.Operacion;
 
+import java.util.ArrayList;
+
 public class FacturasDAO {
 	private static FacturasDAO instancia;
 	
@@ -66,9 +68,34 @@ public class FacturasDAO {
 				return null;
 			}
 		}catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 		return null;
+	}
+	public ArrayList<Factura> facturasXUs(int DNI) {
+		PreparedStatement x;
+		ArrayList<Factura> facturas = new ArrayList<Factura>(); 
+		
+		try {
+			x = ConexionMySQL.getInstancia().getConnection().prepareStatement(" SELECT * FROM facturas WHERE DNIusuario = "+ DNI);
+			ResultSet aux = x.executeQuery();
+			
+			while(aux.next()) {
+				Factura facto = new Factura();
+				facto.setIdFactura(aux.getInt(1));
+				facto.setDNIusuario(aux.getInt(2));
+				facto.setFormaDePago(aux.getString(3));
+				facto.setMonto(aux.getDouble(4));
+				
+				facturas.add(facto);
+			}
+			
+			aux.close();
+			x.close();
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return facturas;	
 	}
 }

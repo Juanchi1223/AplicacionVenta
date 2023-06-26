@@ -42,8 +42,39 @@ public class Main {
 		
 		System.out.println("---- TIENDA ONLINE ----");
 	
-		//UsuarioActual usuario = ingresarUsuario(); 
-	
+		UsuarioActual usuario = ingresarUsuario(); 
+		
+		if(usuario.getNombreUs().equalsIgnoreCase("admin")) {
+			// PROGRAMA MODO ADMINISTRADOR
+			// cambiar cosas del catalogo
+			
+		}
+		else {
+			// PROGRAMA MODO US FINAL
+			Scanner input = new Scanner(System.in);
+			int x;
+			do {
+				System.out.println("Ingresar (1) para manejar el carrito");
+				System.out.println("Ingresar (2) para pagar facturas viejas");
+				System.out.println("Ingresar (0) para cerrar el programa");
+				x = input.nextInt();
+				switch (x){
+					case 1:
+						carrito(usuario);
+						break;
+					case 2:
+						pagarFacturas(usuario);
+						break;
+					case 0:
+						break;
+					default:
+						System.out.println("No es ninguna de las opciones");
+						break;
+				}
+			}
+			while (x != 0);
+			
+		}
 		//carrito(usuario); // ACA ES DONDE SE VA A CAMBIAR ENTRE ADMIN O US FINAL
 
 		//hacerPedido(usuario);			// TODO LUEGO DE HACER EL PEDIDO BORRAR EL CARRITO
@@ -51,9 +82,61 @@ public class Main {
 		//pasarAFacturas();
 		//FacturasDAO.getInstancia().pagar(new Operacion(1, 1, "efvo", "cajero", LocalDateTime.now(), 1500)); 
 		
-		pagar(FacturasDAO.getInstancia().buscarFactura(0));		// TODO conectar al flujo del programa
+		
+		
+		//pagar(FacturasDAO.getInstancia().buscarFactura(0));		// TODO conectar al flujo del programa
 		
 		System.out.println("Termino la ejecucion");
+	}
+
+	private static void pagarFacturas(UsuarioActual usuario) {
+		Scanner input = new Scanner(System.in);
+		// MOSTRAR LAS FACTURAS DEL DNI DEL USUARIO
+		ArrayList<Factura> facturas = FacturasDAO.getInstancia().facturasXUs(usuario.getDocumento());
+		ArrayList<Factura> facturasPagadas = new ArrayList<Factura>();
+		
+		for (Factura i : facturas) {
+			// ELIMINAR FACTURAS PAGADAS
+			if(OperacionesDAO.getInstancia().verificarPagado(i.getIdFactura()))
+				facturasPagadas.add(i);
+		}
+		for (Factura i : facturasPagadas)
+		{
+			if(facturas.indexOf(i) != -1)
+				facturas.remove(i);
+		}
+		if(!facturas.isEmpty())
+		{
+		System.out.println("| idFactura |   DNI  | medio de pago | total |");
+		for (Factura i: facturas) {
+			
+			System.out.println(String.format("|%11d|%5d|%15s|%7f", i.getIdFactura(), i.getDNIusuario(), i.getFormaDePago(), i.getMonto()));
+		}
+		boolean flag = true;
+		int x;
+		do {	// verificar que la fact exita
+			System.out.println("Ingresar el id de Factura que se quiera pagar");
+			x = input.nextInt();
+			if (verificarFactura(x, facturas)){
+				flag = false;
+			}
+		}
+		while(flag);
+		
+		pagar(FacturasDAO.getInstancia().buscarFactura(x));	
+		}
+		else {
+			System.out.println("YA ESTAN PAGAS TODAS LAS FACTURAS");
+		}
+		
+	}
+
+	private static boolean verificarFactura(int x, ArrayList<Factura> facturas) {
+		for (Factura i: facturas) {
+			if (i.getIdFactura() == x)
+				return true;
+		}
+		return false;
 	}
 
 	private static void pagar(Factura factura) {
@@ -119,6 +202,7 @@ public class Main {
 		System.out.println(aux.getCarrito().toString());
 		
 		PedidosDAO.getInstancia().agregarPedido(aux);
+		CarritoDAO.getInstancia().cerrarCarrito(usuario.getNombreUs());
 		pasarAFacturas(usuario, aux.getIdPedido());
 	}
 	private static ArrayList<Document> parseDoc(ArrayList<Ingreso> carrito){

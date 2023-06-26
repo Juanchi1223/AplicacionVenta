@@ -57,4 +57,20 @@ public class OperacionesDAO {
 		}
 		return id;
 	}
+	public boolean verificarPagado(int idFactura) {
+		boolean flag = false;
+		try {
+			PreparedStatement x = ConexionMySQL.getInstancia().getConnection().prepareStatement(" SELECT * FROM operaciones WHERE idFactura = "+ idFactura);
+			ResultSet aux = x.executeQuery();
+
+			if(aux.next()) {
+				flag = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		return flag;
+	}
 }
