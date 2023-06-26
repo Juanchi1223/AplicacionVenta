@@ -23,7 +23,7 @@ public class PedidosDAO {
 		return instancia;
 	} 
 	
-	public void agregarPedido(Pedido pedido) {
+	public void agregarPedido(Pedido pedido) {	// TODO agregar el carrito con sus cantidades al pedido
 		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
 	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
 		

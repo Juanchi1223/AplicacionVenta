@@ -1,2 +1,0 @@
-# AplicacionVenta
-# AplicacionVenta

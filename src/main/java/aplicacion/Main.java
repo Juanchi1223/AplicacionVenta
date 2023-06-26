@@ -3,6 +3,7 @@ package aplicacion;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import conexiones.ConexionMySQL;
 import dao.*;
 import pojos.*;
 
@@ -26,22 +27,31 @@ public class Main {
 		 * 			+ ACTUALIZAR CATALOGO
 		 * 				+ SE AGREGA EL LOG 	 
 		 * 
+		 * BUSCAR EL TIEMPO DE EJECUCION
 		*/
 		
 		
 		System.out.println("---- TIENDA ONLINE ----");
 	
-		UsuarioActual usuario = ingresarUsuario(); 
+		/*UsuarioActual usuario = ingresarUsuario(); 
 	
 		carrito(usuario.getNombreUs()); // ACA ES DONDE SE VA A CAMBIAR ENTRE ADMIN O US FINAL
-	
+
+		hacerPedido(usuario);	// TODO monotribusta
+*/
+		ConexionMySQL.getInstancia().getConnection();
+		// facturar
+
 		
-		//hacerPedido("Arenales 2057", "rgodio");
+		
+		// cerrar la operacion -> recolectar los minutos para meter en redis
+		
+		
 		
 		System.out.println("Termino la ejecucion");
 	}
 
-	private static void hacerPedido(String direccion, String nombreUs ) { // cambiar parametro a usuario actual
+	private static void hacerPedido(UsuarioActual usuario ) { // cambiar parametro a usuario actual
 		// crear el pedido, buscar el monto de redis, ingresar el pedido a mongo
 		Scanner input = new Scanner(System.in);
 		Pedido aux = new Pedido();
@@ -58,9 +68,9 @@ public class Main {
 		boolean condicion = condicionStringBool();
 		aux.setIva(condicion);
 		
-		aux.setDireccion(direccion);
+		aux.setDireccion(usuario.getDireccion());
 		
-		double monto = getMonto(nombreUs);
+		double monto = getMonto(usuario.getNombreUs());
 		aux.setMonto(monto);
 		
 		System.out.println("Ingresa la cantidad de descuento aplicado: ");
