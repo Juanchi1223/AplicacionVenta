@@ -1,5 +1,7 @@
 package dao;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -43,5 +45,21 @@ public class FacturasDAO {
 		} catch (SQLException e) {
 			System.out.println("ERROR no se pudo acceder al MySQL: " + e);
 		}
+	}
+	public int darIdFact() {
+		PreparedStatement x;
+		int id = -1;
+		try {
+			x = ConexionMySQL.getInstancia().getConnection().prepareStatement(" SELECT idFactura FROM facturas ORDER BY idFactura DESC LIMIT 1");
+			ResultSet aux = x.executeQuery();
+			aux.next();
+			id = aux.getInt(0);
+			x.close();
+			aux.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
 	}
 }

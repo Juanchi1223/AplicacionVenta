@@ -14,46 +14,56 @@ import pojos.*;
 public class Main {
 
 	public static void main(String[] args) {
-		/*
-		 * 	ACA SE DESARROLLA EL CODIGO: 
+		/* 
 		 * 
-		 * 	PRIMERO VA A ESTAR EL INICIO DE SECION -> LUEGO GUARDAMOS ToDO EN UN OBJETO USUARIO (LISTO)
-		 * 	
-		 * 	DOS USUARIOS: COMPRADOR Y ADMINISTRADOR (ARRANCAMOS CON USUARIO)
+		 * TO DO LIST:
+		 * 	CARRITO 	->		- CORROBORAR Q LO INGRESADO SEA UN PRODUCTO
+		 *						- CUANDO SE PASA AL PEDIDO VACIAR EL CARRITO 
 		 *
-		 * 	DESPUES VAN A HABER 4 OPCIONES:
-		 * 			- CARRITO
-		 * 				- VER EL CATALOGO (HAGAMOS UNA TABLA)
-		 *				- HACER PEDIDO
-		 * 			- FACTURAR
-		 * 				- METODO DE PAGO
-		 * 				+ VER LAS FACTURAS
-		 * 			+ ACTUALIZAR CATALOGO
-		 * 				+ SE AGREGA EL LOG 	 
+		 * 	FACTURAR 	->		- VER LO DEL DATE
 		 * 
-		 * BUSCAR EL TIEMPO DE EJECUCION
-		*/
+		 * 	REGISTRO DE OP -> 	- VER LO DEL DATE
+		 * 						- VER EL MINUTO
+		 *						- METODO PARA PAGAR FACTURAS (SOLO PUEDE HABER UN IDFACTURA POR OPERACION)		
+		 *
+	 	 *	CATEGORIAS -> 		- BUSCAR CUANDO TERMINA LA EJECUCION
+	 	 *						- SACAR DIFERENCIA Y GUARDAR EN REDIS
+	 	 *	
+	 	 *	INICIO DE SECION ->	- BASICAMENTE UNA DIFETENTE APLIACION PARA EL ADMIN
+		 *						- METODO PARA CAMBIAR EL CATAGOLOGO
+		 *						- REGISTRAR EL CAMBIO QUE HAGA SOBRE EL CATALOGO
+		 *				 			
+		 * 
+		 */
 		
 		
 		System.out.println("---- TIENDA ONLINE ----");
 	
 		UsuarioActual usuario = ingresarUsuario(); 
 	
-		carrito(usuario.getNombreUs()); // ACA ES DONDE SE VA A CAMBIAR ENTRE ADMIN O US FINAL
+		carrito(usuario); // ACA ES DONDE SE VA A CAMBIAR ENTRE ADMIN O US FINAL
 
-		hacerPedido(usuario);			// TODO LUEGO DE HACER EL PEDIDO BORRAR EL CARRITO
+		//hacerPedido(usuario);			// TODO LUEGO DE HACER EL PEDIDO BORRAR EL CARRITO
 		
+		//pasarAFacturas();
 		//FacturasDAO.getInstancia().pagar(new Operacion(1, 1, "efvo", "cajero", LocalDateTime.now(), 1500));		//TODO buscar como verga es el DATE de sql :) 
-		
-		// facturar
-
-		
-		
-		// cerrar la operacion -> recolectar los minutos para meter en redis
 		
 		
 		
 		System.out.println("Termino la ejecucion");
+	}
+
+	private static void pasarAFacturas(UsuarioActual usuario) {
+		Scanner input = new Scanner(System.in);
+		String forma;
+		
+		System.out.println("Medio de pago a usar: ");
+		forma = input.nextLine();
+		
+		Factura aux = new Factura(usuario.getDocumento(), forma, );
+
+		FacturasDAO.getInstancia().guardarFactura(null);
+		
 	}
 
 	private static void hacerPedido(UsuarioActual usuario ) { // cambiar parametro a usuario actual
@@ -90,6 +100,7 @@ public class Main {
 		System.out.println(aux.getCarrito().toString());
 		
 		PedidosDAO.getInstancia().agregarPedido(aux);
+		pasarAFacturas();
 	}
 
 	private static double getMonto(String nombreUs) {
@@ -129,13 +140,14 @@ public class Main {
 		}while(flag);
 		return null;
 	}
-	private static void carrito(String usuario) {
+	private static void carrito(UsuarioActual usuario) {
 		Scanner input = new Scanner(System.in);
 		int x;
+		String nusuario = usuario.getNombreUs();
 		
 		do {
 			CatalogoDAO.getInstancia().buscarCatalogo();
-			mostrarCarrito(usuario);
+			mostrarCarrito(nusuario);
 			opcionesCarrito();
 			System.out.println("Que opcion queres usar: ");
 
@@ -143,18 +155,20 @@ public class Main {
 			
 			switch (x){
 				case 1:
-					agregarProducto(usuario);
+					agregarProducto(nusuario);
 					break;
 				case 2:
-					sacarProducto(usuario);
+					sacarProducto(nusuario);
 					break;
 				case 3:
-					cambiarProducto(usuario);
+					cambiarProducto(nusuario);
 					break;
 				case 4:
-					estadoAnterior(usuario);
+					estadoAnterior(nusuario);
 					break;
 				case 5:
+					hacerPedido(usuario);
+					borrarCarrito();
 					break;
 				default: 
 					System.out.println("NO ES NINGUNA OPCION");
