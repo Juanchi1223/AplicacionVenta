@@ -9,15 +9,8 @@ public class ConexionMySQL {
 	private Connection connect;
 
 	private ConexionMySQL() {
-/*
- * Class.forName("com.mysql.jdbc.Driver");
-            // Setup the connection with the DB
-            connect = DriverManager
-                    .getConnection("jdbc:mysql://localhost/feedback?"
-                            + "user=sqluser&password=sqluserpw");
- * */
 		try {
-			connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/aplicacion", "tpogodio", "P@ssw0rd!"); //P@ssw0rd! 
+			connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/aplicacion", "tpogodio", "P@ssw0rd!"); 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

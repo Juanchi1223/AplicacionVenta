@@ -20,6 +20,7 @@ public class OperacionesDAO {
 			instancia = new OperacionesDAO();
 		return instancia;
 	}
+	
 	public void pagar(Operacion operacion) {
 		Statement x;
 		try {
@@ -56,6 +57,7 @@ public class OperacionesDAO {
 		}
 		return id;
 	}
+	
 	public boolean verificarPagado(int idFactura) {
 		boolean flag = false;
 		try {

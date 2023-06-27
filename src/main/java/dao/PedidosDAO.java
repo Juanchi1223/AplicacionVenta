@@ -39,6 +39,7 @@ public class PedidosDAO {
 		
 		colecion.insertOne(pedido);
 	}
+	
 	public double buscarMonto(int idPedido) {
 		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
 	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
@@ -49,6 +50,7 @@ public class PedidosDAO {
 		Pedido x = colecion.find(eq("idPedido", idPedido)).first();
 		return x.getMonto();
 	}
+	
 	public int darId() {
 		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
 	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));

@@ -20,15 +20,11 @@ public class Main {
 		/* 
 		 * 
 		 * TO DO LIST:
-		 * 						 		
-		 *
-	 	 *	
-	 	 *	INICIO DE SECION ->	- BASICAMENTE UNA DIFETENTE APLIACION PARA EL ADMIN (OPCIONAL -> SE PUEDEN AGREGAR MAS ADMIN PERO NOSE)
-		 *						- METODO PARA CAMBIAR EL CATAGOLOGO
-		 *						- REGISTRAR EL CAMBIO QUE HAGA SOBRE EL CATALOGO
+		 * 						 
 		 *				 			
 		 * 	- BUSCAR DONDE CORTAR LAS CONEXIONES (OPCIONAL)
-		 * 	
+		 * 	- VER QUE EN EL MAIN DE USUSARIO QUEDA ALGO ABIERTO	
+		 * 
 		 * 	- APROLIJAR EL CODIGO (OPCIONAL)
 		 */
 		
@@ -416,7 +412,6 @@ public class Main {
 		Factura aux = new Factura(usuario.getDocumento(), forma, PedidosDAO.getInstancia().buscarMonto(idPedido));
 
 		FacturasDAO.getInstancia().guardarFactura(aux);
-		
 	}
 
 	private static void hacerPedido(UsuarioActual usuario) { // cambiar parametro a usuario actual

@@ -71,6 +71,7 @@ public class FacturasDAO {
 		}	
 		return null;
 	}
+	
 	public ArrayList<Factura> facturasXUs(int DNI) {
 		PreparedStatement x;
 		ArrayList<Factura> facturas = new ArrayList<Factura>(); 

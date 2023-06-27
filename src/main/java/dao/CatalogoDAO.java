@@ -51,6 +51,7 @@ public class CatalogoDAO {
 		System.out.println("-------------------------");
 		System.out.println();
 	}
+	
 	public double precio(Ingreso ingreso) {
 		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
 	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
@@ -62,6 +63,7 @@ public class CatalogoDAO {
 
 		return prodcuto.getPrecio() * ingreso.getCantidad();
 	}
+	
 	public boolean isProducto(String nombreProd) {
 		boolean flag = false;
 		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
@@ -77,6 +79,7 @@ public class CatalogoDAO {
 		
 		return flag; 
 	}
+	
 	public String cambiarDesc(String producto, String desc) {
 		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
 	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));

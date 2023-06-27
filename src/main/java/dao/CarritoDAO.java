@@ -19,7 +19,7 @@ public class CarritoDAO {
 		return instancia;
 	} 
 	
-	public void agregarCarrito(Ingreso ingreso, String usuario) {	 // ver q se ingrese algo del catalogo, se pueden ingresar cosas random 
+	public void agregarCarrito(Ingreso ingreso, String usuario) {	 // TODO ver q se ingrese algo del catalogo, se pueden ingresar cosas random 
 		if(!duplicado(ingreso, usuario)) {
 		JedisPool pool = ConexionRedis.getInstancia().getJedis();
 		Jedis jedis = pool.getResource();
@@ -119,6 +119,7 @@ public class CarritoDAO {
 		jedis.close();
 		return lista;
 	}
+	
 	public void cerrarCarrito(String usuario) {
  		Jedis jedis = ConexionRedis.getInstancia().getJedis().getResource();
  		
