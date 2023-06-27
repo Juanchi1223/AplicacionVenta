@@ -56,4 +56,19 @@ public class CatalogoDAO {
 
 		return prodcuto.getPrecio() * ingreso.getCantidad();
 	}
+	public boolean isProducto(String nombreProd) {
+		boolean flag = false;
+		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+		
+	    MongoDatabase database = ConexionMongo.getInstancia().getCliente().getDatabase("aplicacion").withCodecRegistry(pojoCodecRegistry);
+		MongoCollection<Producto> colecion = database.getCollection("catalogo", Producto.class); 
+		
+		Producto producto = colecion.find(eq("nombre_prod", nombreProd)).first();
+		if(producto != null) {
+			flag = true;
+		}
+		
+		return flag; 
+	}
 }

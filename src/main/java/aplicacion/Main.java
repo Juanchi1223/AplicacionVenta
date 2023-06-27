@@ -23,8 +23,6 @@ public class Main {
 		 * 	CARRITO 	->		- CORROBORAR Q LO INGRESADO SEA UN PRODUCTO
 		 *						 		
 		 *
-	 	 *	CATEGORIAS -> 		- BUSCAR CUANDO TERMINA LA EJECUCION
-	 	 *						- SACAR DIFERENCIA Y GUARDAR EN REDIS
 	 	 *	
 	 	 *	INICIO DE SECION ->	- BASICAMENTE UNA DIFETENTE APLIACION PARA EL ADMIN (OPCIONAL -> SE PUEDEN AGREGAR MAS ADMIN PERO NOSE)
 		 *						- METODO PARA CAMBIAR EL CATAGOLOGO
@@ -332,8 +330,13 @@ public class Main {
 		
 		Scanner input = new Scanner(System.in);
 		
-		System.out.println("Que producto queres ingresar: ");
-		producto = input.nextLine();
+		do 
+		{
+			System.out.println("Que producto queres ingresar: ");
+			producto = input.nextLine();
+		}
+		while(!CatalogoDAO.getInstancia().isProducto(producto));
+		
 		
 		System.out.println("Cantidad: ");
 		cantidad = Integer.parseInt(input.nextLine());
