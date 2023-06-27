@@ -101,7 +101,7 @@ public class Main {
 				cambiarDescripcion(prod, operador);
 			}
 			else if(character.equalsIgnoreCase("F")) {
-				//cambiarFotos(prod, operador);
+				cambiarFotos(prod, operador);
 			}
 			else if(character.equalsIgnoreCase("C")) {
 				//cambiarComentarios(prod, operador);
@@ -114,6 +114,11 @@ public class Main {
 			}
 		}
 		while(condicionCaracter(character));
+		
+	}
+
+	private static void cambiarFotos(String prod, String operador) {
+		// TODO Auto-generated method stub
 		
 	}
 
