@@ -39,6 +39,7 @@ public class Main {
 		
 		if(usuario.getNombreUs().equalsIgnoreCase("admin")) {
 			// PROGRAMA MODO ADMINISTRADOR
+			System.out.println("--- ENTRO A CAMBIAR EL CATALOGO ---");
 			cambiarCatalogo();
 		}
 		else {
@@ -453,7 +454,7 @@ public class Main {
 		ArrayList<Document> pedido = parseDoc(CarritoDAO.getInstancia().getCarrito(usuario.getNombreUs()));
 		aux.setCarrito(pedido);
 		
-		System.out.println(aux.getCarrito().toString());
+		System.out.println("Se realizo el pedido");
 		
 		PedidosDAO.getInstancia().agregarPedido(aux);
 		CarritoDAO.getInstancia().cerrarCarrito(usuario.getNombreUs());

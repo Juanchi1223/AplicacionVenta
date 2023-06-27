@@ -127,7 +127,7 @@ public class CatalogoDAO {
 		MongoCollection<Producto> colecion = database.getCollection("catalogo", Producto.class); 
 		
 		Producto aux = colecion.find(eq("nombre_prod", producto)).first();
-		ArrayList<String> retorno = aux.getCommentarios();
+		ArrayList<String> retorno = aux.getComentarios();
 		
 		colecion.updateOne(eq("nombre_prod", producto), push("comentarios", comentario));
 		return retorno;
@@ -140,7 +140,7 @@ public class CatalogoDAO {
 		MongoCollection<Producto> colecion = database.getCollection("catalogo", Producto.class); 
 		
 		Producto aux = colecion.find(eq("nombre_prod", producto)).first();
-		ArrayList<String> retorno = aux.getCommentarios();
+		ArrayList<String> retorno = aux.getComentarios();
 		
 		colecion.updateOne(eq("nombre_prod", producto), pull("comentarios", comentario));
 		return retorno;

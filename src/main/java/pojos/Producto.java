@@ -6,7 +6,7 @@ public class Producto {
 	private String nombre_prod;
 	private String descripcion;
 	private ArrayList<String> fotos;
-	private ArrayList<String> commentarios;
+	private ArrayList<String> comentarios;
 	private ArrayList<String> videos;
 	private double precio;
 	
@@ -20,8 +20,8 @@ public class Producto {
 	public ArrayList<String> getFotos() {
 		return fotos;
 	}
-	public ArrayList<String> getCommentarios() {
-		return commentarios;
+	public ArrayList<String> getComentarios() {
+		return comentarios;
 	}
 	public ArrayList<String> getVideos() {
 		return videos;
@@ -38,8 +38,8 @@ public class Producto {
 	public void setFotos(ArrayList<String> fotos) {
 		this.fotos = fotos;
 	}
-	public void setCommentarios(ArrayList<String> commentarios) {
-		this.commentarios = commentarios;
+	public void setComentarios(ArrayList<String> comentarios) {
+		this.comentarios = comentarios;
 	}
 	public void setVideos(ArrayList<String> videos) {
 		this.videos = videos;
