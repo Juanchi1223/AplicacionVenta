@@ -20,15 +20,16 @@ public class Main {
 		/* 
 		 * 
 		 * TO DO LIST:
-		 * 	CARRITO 	->		- CORROBORAR Q LO INGRESADO SEA UN PRODUCTO
-		 *						 		
+		 * 						 		
 		 *
 	 	 *	
 	 	 *	INICIO DE SECION ->	- BASICAMENTE UNA DIFETENTE APLIACION PARA EL ADMIN (OPCIONAL -> SE PUEDEN AGREGAR MAS ADMIN PERO NOSE)
 		 *						- METODO PARA CAMBIAR EL CATAGOLOGO
 		 *						- REGISTRAR EL CAMBIO QUE HAGA SOBRE EL CATALOGO
 		 *				 			
-		 * 
+		 * 	BUSCAR DONDE CORTAR LAS CONEXIONES
+		 * 	
+		 * 	APROLIJAR EL CODIGO
 		 */
 		
 		
@@ -38,8 +39,7 @@ public class Main {
 		
 		if(usuario.getNombreUs().equalsIgnoreCase("admin")) {
 			// PROGRAMA MODO ADMINISTRADOR
-			// cambiar cosas del catalogo
-			
+			cambiarCatalogo();
 		}
 		else {
 			// PROGRAMA MODO US FINAL
@@ -69,6 +69,73 @@ public class Main {
 		guardarTiempo(usuario);
 		
 		System.out.println("Termino la ejecucion");
+	}
+
+	private static void cambiarCatalogo() {
+		Scanner input = new Scanner(System.in);
+		String prod;
+		
+		System.out.println("Quien esta realizando los cambios: ");
+		String operador = input.nextLine();
+		
+		do
+		{
+			System.out.println("Ingresar el producto q se busca cambiar");
+			prod = input.nextLine();
+		}
+		while(!CatalogoDAO.getInstancia().isProducto(prod));
+		
+		
+		String character;
+		do
+		{
+			System.out.println("Ingresar (D) para cambiar la descripcion ");
+			System.out.println("Ingresar (F) para cambiar las fotos");
+			System.out.println("Ingresar (C) para cambiar las comentarios");
+			System.out.println("Ingresar (V) para cambiar los videos");
+			System.out.println("Ingersar (P) para cambiar el precio");
+		
+			character = input.nextLine();
+			
+			if(character.equalsIgnoreCase("D")) {
+				cambiarDescripcion(prod, operador);
+			}
+			else if(character.equalsIgnoreCase("F")) {
+				//cambiarFotos(prod, operador);
+			}
+			else if(character.equalsIgnoreCase("C")) {
+				//cambiarComentarios(prod, operador);
+			}
+			else if(character.equalsIgnoreCase("V")) {
+				//cambiarVideos(prod, operador);
+			}
+			else if(character.equalsIgnoreCase("P")) {
+				//cambiarPrecio(prod, operador);
+			}
+		}
+		while(condicionCaracter(character));
+		
+	}
+
+	private static void cambiarDescripcion(String prod, String op) {
+		Scanner input = new Scanner(System.in);
+		System.out.println("Ingresar la nueva descripcion: ");
+		String desc = input.nextLine();
+		String descVieja = CatalogoDAO.getInstancia().cambiarDesc(prod, desc);
+		
+		Document doc = new Document();
+		doc.append("producto", prod);
+		doc.append("descripcion nueva", desc);
+		doc.append("descripcion vieja", descVieja);
+		doc.append("operador", op);
+		
+		CambiosDAO.getInstancia().guardarCambio(doc);
+	}
+
+	private static boolean condicionCaracter(String character) {
+		if(!character.equalsIgnoreCase("D") && !character.equalsIgnoreCase("F") && !character.equalsIgnoreCase("C") && !character.equalsIgnoreCase("V") && !character.equalsIgnoreCase("P"))
+			return false;
+		return true;
 	}
 
 	private static void guardarTiempo(UsuarioActual usuario) {
