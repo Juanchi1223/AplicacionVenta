@@ -90,7 +90,8 @@ public class CatalogoDAO {
 		System.out.println("Se cambio la descripcion de " + producto);
 		return retorno;
 	}
-	public ArrayList<String> agregarFoto(String producto, String foto){ 	// TODO hacer func buscarProd por nombre asi resumimos
+	// MODIFICAR FOTOS
+	public ArrayList<String> agregarFoto(String producto, String foto){ 	
 		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
 	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
 		
@@ -103,7 +104,7 @@ public class CatalogoDAO {
 		colecion.updateOne(eq("nombre_prod", producto), push("fotos", foto));
 		return retorno;
 	}
-	public ArrayList<String> sacarFoto(String producto, String foto){ 	// TODO hacer func buscarProd por nombre asi resumimos
+	public ArrayList<String> sacarFoto(String producto, String foto){ 	
 		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
 	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
 		
@@ -116,4 +117,77 @@ public class CatalogoDAO {
 		colecion.updateOne(eq("nombre_prod", producto), pull("fotos", foto));
 		return retorno;
 	}
+	
+	// MODIFICAR COMENTARIOS
+	public ArrayList<String> agregarComentario(String producto, String comentario){ 
+		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+		
+	    MongoDatabase database = ConexionMongo.getInstancia().getCliente().getDatabase("aplicacion").withCodecRegistry(pojoCodecRegistry);
+		MongoCollection<Producto> colecion = database.getCollection("catalogo", Producto.class); 
+		
+		Producto aux = colecion.find(eq("nombre_prod", producto)).first();
+		ArrayList<String> retorno = aux.getCommentarios();
+		
+		colecion.updateOne(eq("nombre_prod", producto), push("comentarios", comentario));
+		return retorno;
+	}
+	public ArrayList<String> sacarComentario(String producto, String comentario){ 	
+		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+		
+	    MongoDatabase database = ConexionMongo.getInstancia().getCliente().getDatabase("aplicacion").withCodecRegistry(pojoCodecRegistry);
+		MongoCollection<Producto> colecion = database.getCollection("catalogo", Producto.class); 
+		
+		Producto aux = colecion.find(eq("nombre_prod", producto)).first();
+		ArrayList<String> retorno = aux.getCommentarios();
+		
+		colecion.updateOne(eq("nombre_prod", producto), pull("comentarios", comentario));
+		return retorno;
+	} 
+	// MODIFICAR VIDEOS
+	public ArrayList<String> agregarVideos(String producto, String videos){ 
+		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+		
+	    MongoDatabase database = ConexionMongo.getInstancia().getCliente().getDatabase("aplicacion").withCodecRegistry(pojoCodecRegistry);
+		MongoCollection<Producto> colecion = database.getCollection("catalogo", Producto.class); 
+		
+		Producto aux = colecion.find(eq("nombre_prod", producto)).first();
+		ArrayList<String> retorno = aux.getVideos();
+		
+		colecion.updateOne(eq("nombre_prod", producto), push("videos", videos));
+		return retorno;
+	}
+	public ArrayList<String> sacarVideos(String producto, String videos){ 	
+		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+		
+	    MongoDatabase database = ConexionMongo.getInstancia().getCliente().getDatabase("aplicacion").withCodecRegistry(pojoCodecRegistry);
+		MongoCollection<Producto> colecion = database.getCollection("catalogo", Producto.class); 
+		
+		Producto aux = colecion.find(eq("nombre_prod", producto)).first();
+		ArrayList<String> retorno = aux.getVideos();
+		
+		colecion.updateOne(eq("nombre_prod", producto), pull("videos", videos));
+		return retorno;
+	} 
+	// MODIFICAR PRECIO
+
+	public double cambiarPrecio(String prod, double precio) {
+		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+		
+	    MongoDatabase database = ConexionMongo.getInstancia().getCliente().getDatabase("aplicacion").withCodecRegistry(pojoCodecRegistry);
+		MongoCollection<Producto> colecion = database.getCollection("catalogo", Producto.class); 
+		
+		Producto aux = colecion.find(eq("nombre_prod", prod)).first();
+		double retorno = aux.getPrecio();
+		colecion.updateOne(eq("nombre_prod", prod), set("precio", precio));
+		
+		System.out.println("Se cambio el precio de " + prod);
+		return retorno;
+	}
+	
+	
 }

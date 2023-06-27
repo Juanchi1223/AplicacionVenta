@@ -27,9 +27,9 @@ public class Main {
 		 *						- METODO PARA CAMBIAR EL CATAGOLOGO
 		 *						- REGISTRAR EL CAMBIO QUE HAGA SOBRE EL CATALOGO
 		 *				 			
-		 * 	BUSCAR DONDE CORTAR LAS CONEXIONES
+		 * 	- BUSCAR DONDE CORTAR LAS CONEXIONES (OPCIONAL)
 		 * 	
-		 * 	APROLIJAR EL CODIGO
+		 * 	- APROLIJAR EL CODIGO (OPCIONAL)
 		 */
 		
 		
@@ -103,18 +103,155 @@ public class Main {
 			else if(character.equalsIgnoreCase("F")) {
 				cambiarFotos(prod, operador);
 			}
-			else if(character.equalsIgnoreCase("C")) {
-				//cambiarComentarios(prod, operador);
+			else if(character.equalsIgnoreCase("C")) {	
+				cambiarComentarios(prod, operador);
 			}
 			else if(character.equalsIgnoreCase("V")) {
-				//cambiarVideos(prod, operador);
+				cambiarVideos(prod, operador);
 			}
 			else if(character.equalsIgnoreCase("P")) {
-				//cambiarPrecio(prod, operador);
+				cambiarPrecio(prod, operador);
 			}
 		}
 		while(condicionCaracter(character));
 		
+	}
+
+	private static void cambiarPrecio(String prod, String operador) {
+			Scanner input = new Scanner(System.in);
+			System.out.println("Ingresar el nuevo precio: ");
+			double precio = input.nextDouble();
+			double precioViejo = CatalogoDAO.getInstancia().cambiarPrecio(prod, precio);
+			
+			Document doc = new Document();
+			doc.append("producto", prod);
+			doc.append("precio nuevo", precio);
+			doc.append("precio viejo", precioViejo);
+			doc.append("operador", operador);
+			
+			CambiosDAO.getInstancia().guardarCambio(doc);
+	}
+
+	private static void cambiarVideos(String prod, String operador) {
+		Scanner input = new Scanner(System.in);
+		String x;
+		do		// TODO EXTRAER
+		{
+			System.out.println("Insertar (A) para agregar");
+			System.out.println("Insertar (D) para sacar");	
+			x = input.nextLine();
+		}
+		while(!x.equalsIgnoreCase("A") && !x.equalsIgnoreCase("D"));
+		
+		if(x.equalsIgnoreCase("A")) 
+		{
+			System.out.println("Ingresar el video en URL: ");
+			String video = input.nextLine();
+			
+			ArrayList<String> valorViejo = CatalogoDAO.getInstancia().agregarVideos(prod, video);
+			ArrayList<String> valorNuevo;
+			
+			if(valorViejo != null) {
+				valorNuevo = new ArrayList<String>(valorViejo);
+			}
+			else {
+				valorNuevo = new ArrayList<String>();
+			}
+			
+			valorNuevo.add(video);
+			
+			Document doc = new Document();
+			doc.append("producto", prod);
+			doc.append("fotosNuevas", valorNuevo);
+			doc.append("fotosViejas", valorViejo);
+			doc.append("operador", operador);
+			
+			CambiosDAO.getInstancia().guardarCambio(doc);
+		}
+		else
+		{
+			System.out.println("Ingresar el video en URL a sacar: ");
+			String video = input.nextLine();
+			
+			ArrayList<String> valorViejo = CatalogoDAO.getInstancia().sacarVideos(prod, video);
+			ArrayList<String> valorNuevo;
+			
+			if(valorViejo != null) {
+				valorNuevo = new ArrayList<String>(valorViejo);
+			}
+			else {
+				valorNuevo = new ArrayList<String>();
+			}
+			
+			valorNuevo.remove(video);
+			
+			Document doc = new Document();
+			doc.append("producto", prod);
+			doc.append("fotosNuevas", valorNuevo);
+			doc.append("fotosViejas", valorViejo);
+			doc.append("operador", operador);
+			
+			CambiosDAO.getInstancia().guardarCambio(doc);
+		}
+	}
+
+	private static void cambiarComentarios(String prod, String operador) {	// TODO VER EL PROBLEMA DEL REGISTRO, Debugger!!
+		Scanner input = new Scanner(System.in);
+		String x;
+		do
+		{
+			System.out.println("Insertar (A) para agregar");
+			System.out.println("Insertar (D) para sacar");	
+			x = input.nextLine();
+		}
+		while(!x.equalsIgnoreCase("A") && !x.equalsIgnoreCase("D"));
+		if(x.equalsIgnoreCase("A")) {
+			
+			System.out.println("Ingresar el comentarios: ");
+			String comentario = input.nextLine();
+			
+			ArrayList<String> valorViejo = CatalogoDAO.getInstancia().agregarComentario(prod, comentario);
+			ArrayList<String> valorNuevo;
+			
+			if(valorViejo != null) {	
+				valorNuevo = new ArrayList<String>(valorViejo);
+			}
+			else{
+				valorNuevo = new ArrayList<String>();
+			}
+			
+			valorNuevo.add(comentario);
+			
+			Document doc = new Document();
+			doc.append("producto", prod);
+			doc.append("comentariosNuevos", valorNuevo);
+			doc.append("comentariosViejos", valorViejo);
+			doc.append("operador", operador);
+			
+			CambiosDAO.getInstancia().guardarCambio(doc);
+		}
+		else {
+			System.out.println("Ingresar el comentario a sacar: ");
+			String comentario = input.nextLine();
+			
+			ArrayList<String> valorViejo = CatalogoDAO.getInstancia().sacarComentario(prod, comentario);
+			ArrayList<String> valorNuevo;
+			if (valorViejo != null) {
+				valorNuevo = new ArrayList<String>(valorViejo);
+			}else {
+				valorNuevo = new ArrayList<String>();
+			}
+			
+			valorNuevo.remove(comentario);
+			
+			Document doc = new Document();		// esta funcion se puede extraer para ahora espacio
+			doc.append("producto", prod);
+			doc.append("comentariosNuevos", valorNuevo);
+			doc.append("comentariosViejos", valorViejo);
+			doc.append("operador", operador);
+			
+			CambiosDAO.getInstancia().guardarCambio(doc);
+		}
 	}
 
 	private static void cambiarFotos(String prod, String operador) {
@@ -128,12 +265,20 @@ public class Main {
 		}
 		while(!x.equalsIgnoreCase("A") && !x.equalsIgnoreCase("D"));
 		
-		if(x.equalsIgnoreCase("A")) {
+		if(x.equalsIgnoreCase("A")) { // TODO corroborar que la foto este en la lista
 			System.out.println("Ingresar la foto como url: ");
 			String foto = input.nextLine();
 			
 			ArrayList<String> fotosViejas = CatalogoDAO.getInstancia().agregarFoto(prod, foto);
-			ArrayList<String> fotosNuevos = new ArrayList<String>(fotosViejas);
+			ArrayList<String> fotosNuevos;
+			
+			if(fotosViejas != null) {
+				fotosNuevos = new ArrayList<String>(fotosViejas);
+			}
+			else {
+				fotosNuevos = new ArrayList<String>();
+			}
+			
 			fotosNuevos.add(foto);
 			
 			Document doc = new Document();
@@ -144,12 +289,18 @@ public class Main {
 			
 			CambiosDAO.getInstancia().guardarCambio(doc);
 		}
-		else {	// TODO corroborar que la foto este en la lista
+		else {	 
 			System.out.println("Ingresar la foto como url a sacar: ");
 			String foto = input.nextLine();
 			
-			ArrayList<String> fotosViejas = CatalogoDAO.getInstancia().agregarFoto(prod, foto);
-			ArrayList<String> fotosNuevos = new ArrayList<String>(fotosViejas);
+			ArrayList<String> fotosViejas = CatalogoDAO.getInstancia().sacarFoto(prod, foto);
+			ArrayList<String> fotosNuevos; 
+			if(fotosViejas != null) {
+				fotosNuevos = new ArrayList<String>(fotosViejas);
+			}
+			else {
+				fotosNuevos = new ArrayList<String>();
+			};
 			fotosNuevos.remove(foto);
 			
 			Document doc = new Document();
