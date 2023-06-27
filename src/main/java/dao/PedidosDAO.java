@@ -50,15 +50,4 @@ public class PedidosDAO {
 		Pedido x = colecion.find(eq("idPedido", idPedido)).first();
 		return x.getMonto();
 	}
-	
-	public int darId() {
-		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
-	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
-	    
-		MongoDatabase database = ConexionMongo.getInstancia().getCliente().getDatabase("aplicacion").withCodecRegistry(pojoCodecRegistry);;
-		MongoCollection<Pedido> colecion = database.getCollection("pedidos", Pedido.class);
-	
-		int x = colecion.find().sort(descending("idPedido")).first().getIdPedido();
-		return x;
-	}
 }

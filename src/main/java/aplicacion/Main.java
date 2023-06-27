@@ -418,9 +418,7 @@ public class Main {
 		// crear el pedido, buscar el monto de redis, ingresar el pedido a mongo
 		Scanner input = new Scanner(System.in);
 		Pedido aux = new Pedido();
-		
-		aux.setIdPedido(PedidosDAO.getInstancia().darId()+1);
-		
+				
 		System.out.println("Ingresa tu nombre de pila: ");
 		String nombre = input.nextLine();
 		aux.setNombre(nombre); 
