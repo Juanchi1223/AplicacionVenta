@@ -52,7 +52,6 @@ public class OperacionesDAO {
 			x.close();
 			aux.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return id;
@@ -67,7 +66,7 @@ public class OperacionesDAO {
 				flag = true;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	

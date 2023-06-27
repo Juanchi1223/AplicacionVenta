@@ -21,18 +21,12 @@ public class Main {
 		 * 
 		 * TO DO LIST:
 		 * 	CARRITO 	->		- CORROBORAR Q LO INGRESADO SEA UN PRODUCTO
-		 *						- CUANDO SE PASA AL PEDIDO VACIAR EL CARRITO 
-		 *
-		 * 	FACTURAR 	->		- VER LO DEL DATE
-		 * 
-		 * 	REGISTRO DE OP -> 	- VER LO DEL DATE
-		 * 						- VER EL MINUTO
-		 *						- METODO PARA PAGAR FACTURAS (SOLO PUEDE HABER UN IDFACTURA POR OPERACION)		
+		 *						 		
 		 *
 	 	 *	CATEGORIAS -> 		- BUSCAR CUANDO TERMINA LA EJECUCION
 	 	 *						- SACAR DIFERENCIA Y GUARDAR EN REDIS
 	 	 *	
-	 	 *	INICIO DE SECION ->	- BASICAMENTE UNA DIFETENTE APLIACION PARA EL ADMIN
+	 	 *	INICIO DE SECION ->	- BASICAMENTE UNA DIFETENTE APLIACION PARA EL ADMIN (OPCIONAL -> SE PUEDEN AGREGAR MAS ADMIN PERO NOSE)
 		 *						- METODO PARA CAMBIAR EL CATAGOLOGO
 		 *						- REGISTRAR EL CAMBIO QUE HAGA SOBRE EL CATALOGO
 		 *				 			
@@ -73,20 +67,18 @@ public class Main {
 				}
 			}
 			while (x != 0);
-			
 		}
-		//carrito(usuario); // ACA ES DONDE SE VA A CAMBIAR ENTRE ADMIN O US FINAL
-
-		//hacerPedido(usuario);			// TODO LUEGO DE HACER EL PEDIDO BORRAR EL CARRITO
-		
-		//pasarAFacturas();
-		//FacturasDAO.getInstancia().pagar(new Operacion(1, 1, "efvo", "cajero", LocalDateTime.now(), 1500)); 
-		
-		
-		
-		//pagar(FacturasDAO.getInstancia().buscarFactura(0));		// TODO conectar al flujo del programa
+		guardarTiempo(usuario);
 		
 		System.out.println("Termino la ejecucion");
+	}
+
+	private static void guardarTiempo(UsuarioActual usuario) {
+		usuario.setHoraFin(LocalTime.now());
+		CategoriasDAO.getInstancia().guardarTiempo(usuario);
+		
+		CategoriasDAO.getInstancia().getCategoria(usuario.getNombreUs());
+		
 	}
 
 	private static void pagarFacturas(UsuarioActual usuario) {
@@ -110,7 +102,7 @@ public class Main {
 		System.out.println("| idFactura |   DNI  | medio de pago | total |");
 		for (Factura i: facturas) {
 			
-			System.out.println(String.format("|%11d|%5d|%15s|%7f", i.getIdFactura(), i.getDNIusuario(), i.getFormaDePago(), i.getMonto()));
+			System.out.println(String.format("|%11d|%d|%15s|%7f", i.getIdFactura(), i.getDNIusuario(), i.getFormaDePago(), i.getMonto()));
 		}
 		boolean flag = true;
 		int x;
