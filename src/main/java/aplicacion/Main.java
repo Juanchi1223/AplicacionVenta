@@ -402,14 +402,14 @@ public class Main {
 		OperacionesDAO.getInstancia().pagar(aux);
 	}
 
-	private static void pasarAFacturas(UsuarioActual usuario, int idPedido) {
+	private static void pasarAFacturas(UsuarioActual usuario, double monto) {
 		Scanner input = new Scanner(System.in);
 		String forma;
 		
 		System.out.println("Medio de pago a usar: ");
 		forma = input.nextLine();
 		
-		Factura aux = new Factura(usuario.getDocumento(), forma, PedidosDAO.getInstancia().buscarMonto(idPedido));
+		Factura aux = new Factura(usuario.getDocumento(), forma, monto);
 
 		FacturasDAO.getInstancia().guardarFactura(aux);
 	}
@@ -453,7 +453,9 @@ public class Main {
 		
 		PedidosDAO.getInstancia().agregarPedido(aux);
 		CarritoDAO.getInstancia().cerrarCarrito(usuario.getNombreUs());
-		pasarAFacturas(usuario, aux.getIdPedido());
+		
+		double montoNeto = monto - descuento + impuesto;
+		pasarAFacturas(usuario, montoNeto);
 	}
 	private static ArrayList<Document> parseDoc(ArrayList<Ingreso> carrito){
 		ArrayList<Document> pedidoProd = new ArrayList<Document>();
