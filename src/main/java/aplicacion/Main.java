@@ -118,7 +118,48 @@ public class Main {
 	}
 
 	private static void cambiarFotos(String prod, String operador) {
-		// TODO Auto-generated method stub
+		Scanner input = new Scanner(System.in);
+		String x;
+		do 
+		{
+			System.out.println("Insertar (A) para agrager una foto");
+			System.out.println("Insertar (D) para sacar una foto");	
+			x = input.nextLine();
+		}
+		while(!x.equalsIgnoreCase("A") && !x.equalsIgnoreCase("D"));
+		
+		if(x.equalsIgnoreCase("A")) {
+			System.out.println("Ingresar la foto como url: ");
+			String foto = input.nextLine();
+			
+			ArrayList<String> fotosViejas = CatalogoDAO.getInstancia().agregarFoto(prod, foto);
+			ArrayList<String> fotosNuevos = new ArrayList<String>(fotosViejas);
+			fotosNuevos.add(foto);
+			
+			Document doc = new Document();
+			doc.append("producto", prod);
+			doc.append("fotosNuevas", fotosNuevos);
+			doc.append("fotosViejas", fotosViejas);
+			doc.append("operador", operador);
+			
+			CambiosDAO.getInstancia().guardarCambio(doc);
+		}
+		else {	// TODO corroborar que la foto este en la lista
+			System.out.println("Ingresar la foto como url a sacar: ");
+			String foto = input.nextLine();
+			
+			ArrayList<String> fotosViejas = CatalogoDAO.getInstancia().agregarFoto(prod, foto);
+			ArrayList<String> fotosNuevos = new ArrayList<String>(fotosViejas);
+			fotosNuevos.remove(foto);
+			
+			Document doc = new Document();
+			doc.append("producto", prod);
+			doc.append("fotosNuevas", fotosNuevos);
+			doc.append("fotosViejas", fotosViejas);
+			doc.append("operador", operador);
+			
+			CambiosDAO.getInstancia().guardarCambio(doc);
+		}
 		
 	}
 

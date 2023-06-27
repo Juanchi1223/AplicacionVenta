@@ -9,11 +9,15 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.set;
+import static com.mongodb.client.model.Updates.push;
+import static com.mongodb.client.model.Updates.pull;
 
 
 import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
+
+import java.util.ArrayList;
 
 import conexiones.ConexionMongo;
 import pojos.Producto;
@@ -84,6 +88,32 @@ public class CatalogoDAO {
 		String retorno = aux.getDescripcion();
 		colecion.updateOne(eq("nombre_prod", producto), set("descripcion", desc));
 		System.out.println("Se cambio la descripcion de " + producto);
+		return retorno;
+	}
+	public ArrayList<String> agregarFoto(String producto, String foto){ 	// TODO hacer func buscarProd por nombre asi resumimos
+		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+		
+	    MongoDatabase database = ConexionMongo.getInstancia().getCliente().getDatabase("aplicacion").withCodecRegistry(pojoCodecRegistry);
+		MongoCollection<Producto> colecion = database.getCollection("catalogo", Producto.class); 
+		
+		Producto aux = colecion.find(eq("nombre_prod", producto)).first();
+		ArrayList<String> retorno = aux.getFotos();
+		
+		colecion.updateOne(eq("nombre_prod", producto), push("fotos", foto));
+		return retorno;
+	}
+	public ArrayList<String> sacarFoto(String producto, String foto){ 	// TODO hacer func buscarProd por nombre asi resumimos
+		CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+	    CodecRegistry pojoCodecRegistry = fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+		
+	    MongoDatabase database = ConexionMongo.getInstancia().getCliente().getDatabase("aplicacion").withCodecRegistry(pojoCodecRegistry);
+		MongoCollection<Producto> colecion = database.getCollection("catalogo", Producto.class); 
+		
+		Producto aux = colecion.find(eq("nombre_prod", producto)).first();
+		ArrayList<String> retorno = aux.getFotos();
+		
+		colecion.updateOne(eq("nombre_prod", producto), pull("fotos", foto));
 		return retorno;
 	}
 }
