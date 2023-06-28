@@ -38,5 +38,9 @@ public class PedidosDAO {
 		MongoCollection<Pedido> colecion = database.getCollection("pedidos", Pedido.class);
 		
 		colecion.insertOne(pedido);
+		
+	}
+	public void cerrarConexion() {
+		ConexionMongo.getInstancia().getCliente().close();
 	}
 }

@@ -64,8 +64,13 @@ public class Main {
 			while (x != 0);
 		}
 		guardarTiempo(usuario);
+		cerrarConexiones();
 		
 		System.out.println("Termino la ejecucion");
+	}
+
+	private static void cerrarConexiones() {
+		
 	}
 
 	private static void cambiarCatalogo() {
