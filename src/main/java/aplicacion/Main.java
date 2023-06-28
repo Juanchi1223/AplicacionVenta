@@ -17,17 +17,6 @@ import pojos.*;
 public class Main {
 
 	public static void main(String[] args) {
-		/* 
-		 * 
-		 * TO DO LIST:
-		 * 						 
-		 *				 			
-		 * 	- BUSCAR DONDE CORTAR LAS CONEXIONES (OPCIONAL)
-		 * 	- VER QUE EN EL MAIN DE USUSARIO QUEDA ALGO ABIERTO	
-		 * 
-		 * 	- APROLIJAR EL CODIGO (OPCIONAL)
-		 */
-		
 		
 		System.out.println("---- TIENDA ONLINE ----");
 	
@@ -62,9 +51,9 @@ public class Main {
 				}
 			}
 			while (x != 0);
+			cortarConecionesUs();
 		}
 		guardarTiempo(usuario);
-		
 		System.out.println("Termino la ejecucion");
 	}
 
@@ -90,7 +79,8 @@ public class Main {
 			System.out.println("Ingresar (F) para cambiar las fotos");
 			System.out.println("Ingresar (C) para cambiar las comentarios");
 			System.out.println("Ingresar (V) para cambiar los videos");
-			System.out.println("Ingersar (P) para cambiar el precio");
+			System.out.println("Ingresar (P) para cambiar el precio");
+			System.out.println("Para salir ingresa 'exit':");
 		
 			character = input.nextLine();
 			
@@ -225,7 +215,7 @@ public class Main {
 			doc.append("comentariosViejos", valorViejo);
 			doc.append("operador", operador);
 			
-			CambiosDAO.getInstancia().guardarCambio(doc);
+			CambiosDAO.getInstancia().guardarCambio(doc);			
 		}
 		else {
 			System.out.println("Ingresar el comentario a sacar: ");
@@ -337,8 +327,8 @@ public class Main {
 		CategoriasDAO.getInstancia().guardarTiempo(usuario);
 		
 		CategoriasDAO.getInstancia().getCategoria(usuario.getNombreUs());
-		
-	}
+		CategoriasDAO.getInstancia().cortarConex();
+	}	
 
 	private static void pagarFacturas(UsuarioActual usuario) {
 		Scanner input = new Scanner(System.in);
@@ -638,5 +628,9 @@ public class Main {
 		System.out.println("----  BIENVENIDO " + user + " ----");
 		
 		return UsuarioDAO.getInstancia().guardarDatos(user);
+	}
+	private static void cortarConecionesUs() {
+		PedidosDAO.getInstancia().cerrarConexion();
+		FacturasDAO.getInstancia().cerrarConexion();		
 	}
 }

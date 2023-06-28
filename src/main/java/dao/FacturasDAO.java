@@ -98,4 +98,11 @@ public class FacturasDAO {
 		}
 		return facturas;	
 	}
+	public void cerrarConexion() {
+		try {
+			ConexionMySQL.getInstancia().getConnection().close();
+		} catch (SQLException e) {
+			;
+		}
+	}
 }
