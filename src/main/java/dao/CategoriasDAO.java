@@ -49,4 +49,7 @@ public class CategoriasDAO {
         	System.out.println("CATEGORIA TOP");
         }
 	}
+	public void cortarConex() {
+		ConexionRedis.getInstancia().getJedis().close();
+	}
 }

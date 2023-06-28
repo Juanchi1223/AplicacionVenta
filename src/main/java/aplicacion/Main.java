@@ -51,15 +51,10 @@ public class Main {
 				}
 			}
 			while (x != 0);
+			cortarConecionesUs();
 		}
 		guardarTiempo(usuario);
-		cerrarConexiones();
-		
 		System.out.println("Termino la ejecucion");
-	}
-
-	private static void cerrarConexiones() {
-		
 	}
 
 	private static void cambiarCatalogo() {
@@ -331,8 +326,8 @@ public class Main {
 		CategoriasDAO.getInstancia().guardarTiempo(usuario);
 		
 		CategoriasDAO.getInstancia().getCategoria(usuario.getNombreUs());
-		
-	}
+		CategoriasDAO.getInstancia().cortarConex();
+	}	
 
 	private static void pagarFacturas(UsuarioActual usuario) {
 		Scanner input = new Scanner(System.in);
@@ -632,5 +627,9 @@ public class Main {
 		System.out.println("----  BIENVENIDO " + user + " ----");
 		
 		return UsuarioDAO.getInstancia().guardarDatos(user);
+	}
+	private static void cortarConecionesUs() {
+		PedidosDAO.getInstancia().cerrarConexion();
+		FacturasDAO.getInstancia().cerrarConexion();		
 	}
 }

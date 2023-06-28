@@ -41,6 +41,11 @@ public class PedidosDAO {
 		
 	}
 	public void cerrarConexion() {
-		ConexionMongo.getInstancia().getCliente().close();
+		try{
+			ConexionMongo.getInstancia().getCliente().close();
+		}
+		catch(Exception E){
+			;
+		}
 	}
 }
