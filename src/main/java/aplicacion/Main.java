@@ -17,17 +17,6 @@ import pojos.*;
 public class Main {
 
 	public static void main(String[] args) {
-		/* 
-		 * 
-		 * TO DO LIST:
-		 * 						 
-		 *				 			
-		 * 	- BUSCAR DONDE CORTAR LAS CONEXIONES (OPCIONAL)
-		 * 	- VER QUE EN EL MAIN DE USUSARIO QUEDA ALGO ABIERTO	
-		 * 
-		 * 	- APROLIJAR EL CODIGO (OPCIONAL)
-		 */
-		
 		
 		System.out.println("---- TIENDA ONLINE ----");
 	
